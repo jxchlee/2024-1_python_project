@@ -1,15 +1,22 @@
-#Caution
-Python version must be in 3.8–3.11
+# Instruction
 
-#install package
+![loginpage.png](readme/loginpage.png)
 
--tensorflow(2.12)
+얼굴 인식을 활용한 시스템 잠금해제 프로그램
 
--image
 
--customtkinter
+# Caution
+**Python version must be in 3.8–3.11**
 
--flask
+# install package
 
-<reference>
+- tensorflow(2.12)
+
+- image
+
+- customtkinter
+
+- flask
+
+## reference
 https://github.com/OJJJN/PYTHON-LOGIN-GUI-CTK
