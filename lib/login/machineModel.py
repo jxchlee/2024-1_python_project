@@ -8,9 +8,9 @@ from tensorflow import keras
 from PIL import Image, ImageOps  # Install pillow instead of PIL
 import numpy as np
 import os
-model_route = os.path.abspath('../model/keras_model.h5')
-label_route = os.path.abspath('../model/labels.txt')
-image_route = os.path.abspath('../src/testImage.jpg')
+model_route = os.path.abspath('../../model/keras_model.h5')
+label_route = os.path.abspath('../../model/labels.txt')
+image_route = os.path.abspath('../../src/testImage.jpg')
 # Disable scientific notation for clarity
 np.set_printoptions(suppress=True)
 print(model_route)

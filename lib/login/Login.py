@@ -23,9 +23,9 @@ app = CTk()
 app.geometry("600x480")
 app.resizable(0, 0)
 
-side_img_data = Image.open("../src/side-.png")
-email_icon_data = Image.open("../src/email-icon.png")
-password_icon_data = Image.open("../src/password-icon.png")
+side_img_data = Image.open("../../src/side-.png")
+email_icon_data = Image.open("../../src/email-icon.png")
+password_icon_data = Image.open("../../src/password-icon.png")
 
 side_img = CTkImage(dark_image=side_img_data, light_image=side_img_data, size=(300, 480))
 email_icon = CTkImage(dark_image=email_icon_data, light_image=email_icon_data, size=(20, 20))
