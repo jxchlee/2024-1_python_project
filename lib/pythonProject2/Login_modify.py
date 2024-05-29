@@ -58,16 +58,23 @@ def monitor_and_kill_notepad(stopEvent, procName):
         for proc in psutil.process_iter(['pid', 'name']):
             if proc.info['name'] == procName:
                 message = f"Killing process: {proc.info}"
-                show_message(message)
                 os.kill(proc.info['pid'], 9)
+                print(message)
+                #show_message(message)
         time.sleep(1)
 
-def show_message(message):
+'''def close_window():
+    print("debug2")
+    root.destroy()'''
+
+'''def show_message(message):
+    global root
     # tkinter 창을 생성하여 메시지를 생성
     root = tk.Tk()
-    root.withdraw()  # 메인 윈도우 숨김
     messagebox.showinfo("Process Monitor", message)
-    root.destroy()  # 메시지 박스를 닫으면 메인 윈도우도 종료
+    root.withdraw()  # 윈도우를 화면에 보이게 함
+    root.after(1000, root.destroy)  # 1초 후에 윈도우를 닫음
+    print("debug")'''
 
 def login():
     # Retrieve login credentials
@@ -87,10 +94,13 @@ def login():
         if resData != -1:
             status_label.configure(text="Login successful!", text_color="#00FF00")
             stopEvent.set() # Signal to the thread to exit
-            app.destroy()
-            subprocess.run(["python", "cameraTest.py"])  # Run guitest.py using subprocess
             message = f'Process({procName}) is alive!'
-            show_message(message)
+            #show_message(message)
+            #messageThread = threading.Thread(target=show_message, args=(message))
+            #messageThread.start()
+            #messageThread.join()
+            print(message)
+            subprocess.run(["python", "cameraTest.py"])  # Run guitest.py using subprocess
     else:
         # User not found
         status_label.configure(text="User not found!", text_color="#FF0000")
