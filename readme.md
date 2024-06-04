@@ -16,7 +16,6 @@
 
 - customtkinter
 
-- flask
-
+- psutil
 ## reference
 https://github.com/OJJJN/PYTHON-LOGIN-GUI-CTK

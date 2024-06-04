@@ -3,26 +3,16 @@
 # 그리고 이미지 비교를 했을 때 클래스가 무엇인지를 확인 후 해당되는 class일 경우 잠금해제하는 식으로 진행할 예정
 # 5.27 request 구현. 수요일에 test 예정
 # 5.29 서버 요청 후 데이터 정상적으로 받는 것 확인. resData에 해당 값 받음.
+# 6.4 pythonProject2 폴더 밑에 kill_notepad 파일 만듬
+# 해당 파일을 Login_modify에 작성된 메모장을 닫는 기능만을 뽑아내 함수 형식으로 구현해놓은 파일이다.
+# 이 login 파일에서 kill_notepad을 import해서 app.mainloop() 실행 직전에 해당 함수를 실행시켰다.
+
 from customtkinter import *
 from PIL import Image
-#import mysql.connector
 import subprocess
 import requests
 import json
-import time
-
-
-#-----------------------------------------------
-
-# db = mysql.connector.connect(
-#     host="localhost",
-#     port=9999,
-#     user="your_username",
-#     password="your_password",
-#     database="your_database_name"
-# )
-#-----------------------------------------------
-
+from lib.pythonProject2.kill_notepad import monitor_thread_start
 
 app = CTk()
 app.title('잠금해제')
@@ -73,31 +63,27 @@ def login():
     resData = None
     data = {'email': email, 'password': password}
     url = 'https://e37b-182-231-229-141.ngrok-free.app/loginCheck'
-    print(email, password)
     res = requests.post(url, data=data)
     if res != None:
         value = json.loads(res.text)
         resData = value['class']    #서버에서 받은 class 값
 
-
-#-----------------------------------------------
-    # # Construct SQL query to fetch user record
-    # query = "SELECT * FROM users WHERE email = %s"
-    # cursor = db.cursor()
-    # cursor.execute(query, (email,))
-    # user = cursor.fetchone()
-#----------------------------------------------
-
-
-    if resData != -1:
-        # Login successful
-        status_label.configure(text="Login successful!", text_color="#00FF00")
-        app.destroy()
-        subprocess.run(["python", "cameraTest.py"])  # Run guitest.py using subprocess
+    if resData != None:
+        if resData != -1:
+            # Login successful
+            status_label.configure(text="Login successful!", text_color="#00FF00")
+            app.destroy()
+            subprocess.run(["python", "cameraTest.py"])  # Run guitest.py using subprocess
+        else:
+## User not found
+            status_label.configure(text="User not found!", text_color="#FF0000")
     else:
-        # User not found
-        status_label.configure(text="User not found!", text_color="#FF0000")
+# User not found
+        status_label.configure(text="internet error!", text_color="#FF0000")
 
 
 CTkButton(master=frame, text="Login", fg_color="#5766F9", hover_color="#E44982", font=("Arial Bold", 12),
           text_color="#ffffff", width=225, command=login).pack(anchor="w", pady=(40, 0), padx=(25, 0))
+
+monitor_thread_start()
+app.mainloop()
