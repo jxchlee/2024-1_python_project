@@ -17,5 +17,7 @@
 - customtkinter
 
 - psutil
+
+- CTkMessagebox
 ## reference
 https://github.com/OJJJN/PYTHON-LOGIN-GUI-CTK

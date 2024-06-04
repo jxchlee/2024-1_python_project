@@ -6,6 +6,9 @@
 # 6.4 pythonProject2 폴더 밑에 kill_notepad 파일 만듬
 # 해당 파일을 Login_modify에 작성된 메모장을 닫는 기능만을 뽑아내 함수 형식으로 구현해놓은 파일이다.
 # 이 login 파일에서 kill_notepad을 import해서 app.mainloop() 실행 직전에 해당 함수를 실행시켰다.
+# notepad를 kill하는 기능 작성 필요함. test로 resData값을 1로 고정시켜놓았음. 해제할 필요 있음
+# 서버한테 리턴받는 값이 str인지 확인
+# 모든 기능 다 연결시키고 작동 확인 함. 매인 함수에서 카메라를 작동시켜서 그런지 엄청 느림
 
 from customtkinter import *
 from PIL import Image
@@ -13,11 +16,13 @@ import subprocess
 import requests
 import json
 from lib.pythonProject2.kill_notepad import monitor_thread_start
+from cameraTest import faceIdenfy
 
 app = CTk()
 app.title('잠금해제')
 app.geometry("600x480")
 app.resizable(0, 0)
+
 
 side_img_data = Image.open("../../src/side-.png")
 email_icon_data = Image.open("../../src/email-icon.png")
@@ -65,15 +70,23 @@ def login():
     url = 'https://e37b-182-231-229-141.ngrok-free.app/loginCheck'
     res = requests.post(url, data=data)
     if res != None:
-        value = json.loads(res.text)
-        resData = value['class']    #서버에서 받은 class 값
-
+        try:
+            value = json.loads(res.text)
+            resData = value['class']    #서버에서 받은 class 값
+        except:
+            resData = None
+    resData = '1' ###############3
     if resData != None:
         if resData != -1:
             # Login successful
             status_label.configure(text="Login successful!", text_color="#00FF00")
             app.destroy()
-            subprocess.run(["python", "cameraTest.py"])  # Run guitest.py using subprocess
+            #subprocess.run(["python", "cameraTest.py"])  # Run using subprocess
+            clas_result = faceIdenfy().split()[1]
+            if clas_result == resData:
+                print('unlock successfully') ####프로세스 반복문 죽이기
+                return
+
         else:
 ## User not found
             status_label.configure(text="User not found!", text_color="#FF0000")
@@ -87,3 +100,4 @@ CTkButton(master=frame, text="Login", fg_color="#5766F9", hover_color="#E44982",
 
 monitor_thread_start()
 app.mainloop()
+
