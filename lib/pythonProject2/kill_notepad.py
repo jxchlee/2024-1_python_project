@@ -20,4 +20,5 @@ def monitor_thread_start():
     stopEvent = threading.Event()
     monitorThread = threading.Thread(target=monitor_and_kill_notepad, args=(stopEvent, procName))
     monitorThread.start()
+    return stopEvent
 

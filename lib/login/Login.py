@@ -61,6 +61,7 @@ status_label.pack(anchor="w", padx=(25, 0))
 
 resData=None
 def login():
+    print('login')
     # Retrieve login credentials
     email = email_entry.get()
     password = password_entry.get()
@@ -73,20 +74,25 @@ def login():
         try:
             value = json.loads(res.text)
             resData = value['class']    #서버에서 받은 class 값
+            print('데이터 있음')
         except:
             resData = None
-    resData = '1' ###############3
+
     if resData != None:
         if resData != -1:
+            print('로그인 됨. resdata:', resData)
+            print('resdata type:', type(resData))
+
             # Login successful
             status_label.configure(text="Login successful!", text_color="#00FF00")
             app.destroy()
             #subprocess.run(["python", "cameraTest.py"])  # Run using subprocess
             clas_result = faceIdenfy().split()[1]
-            if clas_result == resData:
+            if int(clas_result) == resData:
+                print('인증 성공')
+                stopEvent.set()  # Signal to the thread to exit
                 print('unlock successfully') ####프로세스 반복문 죽이기
                 return
-
         else:
 ## User not found
             status_label.configure(text="User not found!", text_color="#FF0000")
@@ -98,6 +104,7 @@ def login():
 CTkButton(master=frame, text="Login", fg_color="#5766F9", hover_color="#E44982", font=("Arial Bold", 12),
           text_color="#ffffff", width=225, command=login).pack(anchor="w", pady=(40, 0), padx=(25, 0))
 
-monitor_thread_start()
+stopEvent = monitor_thread_start()
 app.mainloop()
+
 
